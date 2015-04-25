@@ -1,5 +1,4 @@
-// My lady's fat, she's ugly, she's fat and she's ugly, but I love her, I need her, I really really love her
-// featuring Chris the DJ
+//My lady's fat, she's ugly, she's fat and she's ugly, but I love her, I need her, I really really love her
 #include <LiquidCrystal.h>
 #include "RNA3_5.h"
 
@@ -135,7 +134,7 @@ void loop(){
   //Pause so technician can do the thing  
   writeLine(lcd, "REPLACE SPIN COLUMN", 1);
   pauseState = true;
-  pauseCheck(pauseState, pausePin, unpausePin, lcd, ignore);
+  pauseCheck(pausePin, unpausePin, lcd, ignore);
 
 
   //ELUTION BUFFER ROUND
@@ -166,7 +165,7 @@ void loop(){
   writeLine(lcd, "REMOVE WASTE", 1);
   pauseState = true;
   
-  pauseCheck(pauseState, pausePin, unpausePin, lcd, ignore);
+  pauseCheck(pausePin, unpausePin, lcd, ignore);
 
 
   //sterilization round (ethanol)

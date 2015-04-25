@@ -28,7 +28,7 @@ boolean printCheck = false;
 void writeLine(LiquidCrystal lcd, String string, int line);
 void countDown(LiquidCrystal lcd, unsigned long timeLeft);
 void tempWrite (LiquidCrystal lcd, String string);
-unsigned long pauseCheck (boolean pauseState, int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]);
+unsigned long pauseCheck (int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]);
 void motorStop(int motorPins[]);
 void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
@@ -90,7 +90,7 @@ inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rx
     // keep track of remaining time, should we pause the cycle
     unsigned long timeDif = timeAir - millis();
     // reset air time to accomodate for time lost
-    timeAir = timeDif + pauseCheck(pauseState, pausePin, unpausePin, lcd, airPins);
+    timeAir = timeDif + pauseCheck(pausePin, unpausePin, lcd, airPins);
     countDown(lcd, timeAir-millis());
   }
   motorStop(airPins);
@@ -107,7 +107,7 @@ inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rx
       return true;
     }
     unsigned long timeDif = timeRxn - millis();
-    timeRxn = timeDif + pauseCheck(pauseState, pausePin, unpausePin, lcd, ignore);
+    timeRxn = timeDif + pauseCheck(pausePin, unpausePin, lcd, ignore);
     countDown(lcd, timeRxn - millis());
   }
   //vacuum
@@ -124,7 +124,7 @@ inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rx
       return true;
     }
     unsigned long timeDif = timeSolenoid - millis();
-    timeSolenoid = timeDif + pauseCheck(pauseState, pausePin, unpausePin, lcd, solenoidPins);
+    timeSolenoid = timeDif + pauseCheck(pausePin, unpausePin, lcd, solenoidPins);
     countDown(lcd, timeSolenoid - millis());
   }
   motorStop(solenoidPins);
@@ -147,10 +147,10 @@ inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rx
  * Error Conditions: None.
  * Return Value:
  */
-unsigned long pauseCheck(boolean pauseState, int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]){
+unsigned long pauseCheck(int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]){
 /*
   do{
-    //if puased stop the motor
+    //if paused stop the motor
     if(pauseState) {
       motorStop(motorPins);
       // report the pause
@@ -257,7 +257,7 @@ inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin,
     // record the amount of time remaining
     unsigned long timeDif = duration - millis();
     // reset the end time withthe remaining time to accomodate for pause duration
-    duration = timeDif + pauseCheck(pauseState, pausePin, unpausePin, lcd, motorPins);
+    duration = timeDif + pauseCheck(pausePin, unpausePin, lcd, motorPins);
     
     // lcd prints volume
     unsigned long volume = (unsigned long)flowRate*(millis()%60000)/1000;  //need to revise length of volume digits once know more definite flowrate and final volumes***************************************
