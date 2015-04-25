@@ -1,3 +1,44 @@
+/*
+ * Filename: RNA3_5.h
+ * Author: UCSD_EWH RNA
+ * Description: Header file containing methods for RNA extraction.
+ * Date: 
+ *
+ * Data Fields:
+ *            int check=1;
+ *            boolean stopState=false;
+ *            boolean pauseState=false;
+ *            boolean startState=false;
+ *            boolean sterilizationCheck=false;
+ *
+ *            int stopPin=50;
+ *            int startPin=26;
+ *            int pausePin=24;
+ *            int unpausePin=22;
+ *
+ *            int airPins[] = {2, 3};
+ *            int solenoidPins[]= {2, 3};
+ *            int IRPins[] = {2, 3};
+ *            int washPins[] = {2, 3};
+ *            int elutionPins[] = {2, 3};
+ *            int sterilizationPins[] = {2, 3};
+ *            int ignore[] = {-1, -1};
+ *
+ *            boolean printCheck = false;
+ *
+ * Methods:
+ *            void writeLine(LiquidCrystal lcd, String string, int line);
+ *            void countDown(LiquidCrystal lcd, unsigned long timeLeft);
+ *            void tempWrite (LiquidCrystal lcd, String string);
+ *            unsigned long pauseCheck (int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]);
+ *            void motorStop(int motorPins[]);
+ *            void runForward(int motorPins[]);
+ *            void runBackward(int motorPins[]);
+ *            double voltsToFlow(int rawADC)
+ *
+ * Sources of Help:
+ */
+
 
 #include <Arduino.h>
 
