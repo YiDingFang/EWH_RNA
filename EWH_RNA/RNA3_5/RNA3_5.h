@@ -56,12 +56,12 @@ int startPin=26;
 int pausePin=24;
 int unpausePin=22;
 
-int airPins[] = {2, 3};
-int solenoidPins[]= {2, 3};
-int IRPins[] = {2, 3};
-int washPins[] = {2, 3};
-int elutionPins[] = {2, 3};
-int sterilizationPins[] = {2, 3};
+int airPins[] = {33, 32};
+int solenoidPins[]= {35, 34};
+int IRPins[] = {43, 42};
+int washPins[] = {33, 32};
+int elutionPins[] = {35, 34};
+int sterilizationPins[] = {43, 42};
 int ignore[] = {-1, -1};
 
 boolean printCheck = false;
@@ -270,6 +270,7 @@ UNPAUSE:
  * Error Conditions: None.
  * Return Value:
  */
+ 
 inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd){
   // set the flowrate
   double flowRate = 1;
