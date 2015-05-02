@@ -78,7 +78,7 @@ void loop(){
 
   //PROCEED WITH PROTOCOL; possible have:  startState = false;
   //air-vac-sol  
-  stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   
   // check stop state
   if(stopState) {
@@ -108,8 +108,8 @@ void loop(){
     // begin IR round
     writeLine(lcd, "IR ROUND", 1);
     writeLine(lcd, "BUFFER", 2);
-    // run the IR buffer for 5000ms
-    stopState = runBuffer(IRPins, 5000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    // run the IR buffer for 2000ms
+    stopState = runBuffer(IRPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
     // check stops are necessary
     if(stopState) {
       tempWrite(lcd, "STOP");
@@ -119,13 +119,20 @@ void loop(){
     check++;
   }
   // run postbuffer
-  stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
   }
   // report end of IR round
   tempWrite(lcd, "IR ROUND COMPLETE");
+
+// Pause so technician can do the thing  
+  writeLine(lcd, "BREAK BEFORE WASH1", 1);
+  // pause the sequence
+  pauseState = true;
+  // call pausecheck and wait for unpause
+  pauseCheck(pausePin, unpausePin, lcd, ignore);
 
 
   // WASH BUFFER ROUND 1
@@ -134,8 +141,8 @@ void loop(){
   {
     writeLine(lcd, "WASH ROUND1", 1);
     writeLine(lcd, "BUFFER", 2);
-    //run wash buffer for 5000ms
-    stopState = runBuffer(washPins, 5000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    //run wash buffer for 2000ms
+    stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
     if(stopState) {
       tempWrite(lcd, "STOP");
       return;
@@ -144,7 +151,7 @@ void loop(){
     check++;
   }
   // run post buffer
-  stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -152,14 +159,22 @@ void loop(){
   // report the end of the first wash round
   tempWrite(lcd, "WASH ROUND1 COMPLETE");  
 
+
+// Pause so technician can do the thing  
+  writeLine(lcd, "BREAK BEFORE WASH2", 1);
+  // pause the sequence
+  pauseState = true;
+  // call pausecheck and wait for unpause
+  pauseCheck(pausePin, unpausePin, lcd, ignore);
+
   // WASH BUFFER ROUND 2
   // if the previous round was successful 
   if(check==3)
   {
     writeLine(lcd, "WASH ROUND2", 1);
     writeLine(lcd, "BUFFER", 2);
-    // run wash buffer fro 5000ms
-    stopState = runBuffer(washPins, 5000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    // run wash buffer fro 2000ms
+    stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
     if(stopState) {
       tempWrite(lcd, "STOP");
       return;
@@ -168,7 +183,7 @@ void loop(){
     check++;
   }
   // run the post buffer
-  stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -192,7 +207,7 @@ void loop(){
     writeLine(lcd, "ELUTION ROUND", 1);
     writeLine(lcd, "BUFFER", 2);
     // run the elution round
-    stopState = runBuffer(elutionPins, 5000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    stopState = runBuffer(elutionPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
     if(stopState) {
       tempWrite(lcd, "STOP");
       return;
@@ -201,7 +216,7 @@ void loop(){
     check=5;
   }
   // run the post buffer for the elution round
-  stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -223,15 +238,15 @@ void loop(){
     // report sterilization
     writeLine(lcd, "STERILIZING...", 1);
     writeLine(lcd, "SOLUTION", 2);
-    // run sterilizatin round for 5000ms
-    stopState = runBuffer(sterilizationPins, 5000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    // run sterilizatin round for 2000ms
+    stopState = runBuffer(sterilizationPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
     // check for the stop state
     if(stopState) {
       tempWrite(lcd, "STOP");
       return;
     }
     // run the postBuffer for sterilization
-    stopState= postBuffer(airPins, 5000UL, 5000UL, solenoidPins, 5000UL, stopPin, stopState, lcd);  
+    stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);  
     lcd.clear();
     tempWrite(lcd, "STERILIZED");
     pauseState = false;
