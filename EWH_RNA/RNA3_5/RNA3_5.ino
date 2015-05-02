@@ -76,7 +76,7 @@ void loop(){
 
   //PROCEED WITH PROTOCOL; possible have:  startState = false;
   //air-vac-sol  
-  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  //stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   
   // check stop state
   if(stopState) {
@@ -145,7 +145,7 @@ void loop(){
       tempWrite(lcd, "STOP");
       return;
     }
-    // increment the che
+    // increment the check
     check++;
   }
   // run post buffer

@@ -58,8 +58,8 @@ int unpausePin=22;
 
 int solenoidPins[]= {1, 2};
 int IRPins[] = {43, 42};
-int washPins[] = {33, 32};
-int elutionPins[] = {35, 34};
+int washPins[] = {35, 34};
+int elutionPins[] = {33, 32};
 int sterilizationPins[] = {43, 42};
 int ignore[] = {-1, -1};
 
