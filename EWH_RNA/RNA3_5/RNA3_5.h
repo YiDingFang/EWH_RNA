@@ -56,8 +56,7 @@ int startPin=26;
 int pausePin=24;
 int unpausePin=22;
 
-int airPins[] = {33, 32};
-int solenoidPins[]= {35, 34};
+int solenoidPins[]= {1, 2};
 int IRPins[] = {43, 42};
 int washPins[] = {33, 32};
 int elutionPins[] = {35, 34};
@@ -106,35 +105,7 @@ double voltsToFlow(int rawADC) //Analog to Digital Conversion
  * Return Value:
  */
  
-inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
-  
-  writeLine(lcd, "AIR", 2);
-  //prints TIME to the LCD
-  (lcd).setCursor(10,2);
-  (lcd).print("TIME: ");
-  (lcd).setCursor(17,2);
-  (lcd).print(":");
-  
-  // set the end time for the Air round
-  unsigned long timeAir = airTime + millis();
-  // while the interval has not ended
-  while(millis()<timeAir){
-    // run the airPump
-    runForward(airPins);
-    
-    // if stop is pressed, end proccess
-    if(digitalRead(stopPin)){
-      motorStop(airPins);
-      return true;
-    }
-    
-    // keep track of remaining time, should we pause the cycle
-    unsigned long timeDif = timeAir - millis();
-    // reset air time to accomodate for time lost
-    timeAir = timeDif + pauseCheck(pausePin, unpausePin, lcd, airPins);
-    countDown(lcd, timeAir-millis());
-  }
-  motorStop(airPins);
+inline boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
 
   //incubate
   writeLine(lcd, "INCUBATE", 2);

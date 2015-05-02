@@ -30,8 +30,6 @@ void setup() {
   pinMode(pausePin, INPUT);
   pinMode(stopPin, INPUT);
   pinMode(unpausePin, INPUT);
-  pinMode(airPins[0], OUTPUT);
-  pinMode(airPins[1], OUTPUT);
   pinMode(solenoidPins[0], OUTPUT);
   pinMode(solenoidPins[1], OUTPUT);
   pinMode(IRPins[0], OUTPUT);
@@ -78,7 +76,7 @@ void loop(){
 
   //PROCEED WITH PROTOCOL; possible have:  startState = false;
   //air-vac-sol  
-  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   
   // check stop state
   if(stopState) {
@@ -119,7 +117,7 @@ void loop(){
     check++;
   }
   // run postbuffer
-  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -151,7 +149,7 @@ void loop(){
     check++;
   }
   // run post buffer
-  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -183,7 +181,7 @@ void loop(){
     check++;
   }
   // run the post buffer
-  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -216,7 +214,7 @@ void loop(){
     check=5;
   }
   // run the post buffer for the elution round
-  stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
+  stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
   if(stopState) {
     tempWrite(lcd, "STOP");
     return;
@@ -246,7 +244,7 @@ void loop(){
       return;
     }
     // run the postBuffer for sterilization
-    stopState= postBuffer(airPins, 2000UL, 2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);  
+    stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);  
     lcd.clear();
     tempWrite(lcd, "STERILIZED");
     pauseState = false;
