@@ -21,6 +21,8 @@
  *            int unpausePin=22;
  *            int primePin = 20;
  *
+ *            const unsigned long primeTime = 5000;
+ *
  *            int airPins[] = {2, 3};
  *            int solenoidPins[]= {2, 3};
  *            int IRPins[] = {2, 3};
@@ -65,7 +67,7 @@ int pausePin=24;
 int unpausePin=22;
 int primePin = 22; //need to add this button in the circuit
 
-unsigned long primeTime = 5000;
+const unsigned long primeTime = 5000;
 
 int solenoidPins[]= {1, 2};
 int IRPins[] = {33, 32};
