@@ -10,11 +10,18 @@
  *            boolean pauseState=false;
  *            boolean startState=false;
  *            boolean sterilizationCheck=false;
+ *            boolean sterilizationCheck=false;
+ *            boolean IRPrimed = false;
+ *            boolean washPrimed = false;
+ *            boolean elutionPrimed = false;
  *
  *            int stopPin=50;
  *            int startPin=26;
  *            int pausePin=24;
  *            int unpausePin=22;
+ *            int primePin = 20;
+ *
+ *            const unsigned long primeTime = 5000;
  *
  *            int airPins[] = {2, 3};
  *            int solenoidPins[]= {2, 3};
@@ -50,16 +57,21 @@ boolean stopState=false;
 boolean pauseState=false;
 boolean startState=false;
 boolean sterilizationCheck=false;
+boolean IRPrimed = false;
+boolean washPrimed = false;
+boolean elutionPrimed = false;
 
 int stopPin=50;
 int startPin=26;
 int pausePin=24;
 int unpausePin=22;
+int primePin = 22; //need to add this button in the circuit
 
-int airPins[] = {33, 32};
-int solenoidPins[]= {35, 34};
-int IRPins[] = {43, 42};
-int washPins[] = {33, 32};
+const unsigned long primeTime = 5000;
+
+int solenoidPins[]= {1, 2};
+int IRPins[] = {33, 32};
+int washPins[] = {43, 42};
 int elutionPins[] = {35, 34};
 int sterilizationPins[] = {43, 42};
 int ignore[] = {-1, -1};
@@ -106,35 +118,7 @@ double voltsToFlow(int rawADC) //Analog to Digital Conversion
  * Return Value:
  */
  
-inline boolean postBuffer(int airPins[], unsigned long airTime, unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
-  
-  writeLine(lcd, "AIR", 2);
-  //prints TIME to the LCD
-  (lcd).setCursor(10,2);
-  (lcd).print("TIME: ");
-  (lcd).setCursor(17,2);
-  (lcd).print(":");
-  
-  // set the end time for the Air round
-  unsigned long timeAir = airTime + millis();
-  // while the interval has not ended
-  while(millis()<timeAir){
-    // run the airPump
-    runForward(airPins);
-    
-    // if stop is pressed, end proccess
-    if(digitalRead(stopPin)){
-      motorStop(airPins);
-      return true;
-    }
-    
-    // keep track of remaining time, should we pause the cycle
-    unsigned long timeDif = timeAir - millis();
-    // reset air time to accomodate for time lost
-    timeAir = timeDif + pauseCheck(pausePin, unpausePin, lcd, airPins);
-    countDown(lcd, timeAir-millis());
-  }
-  motorStop(airPins);
+inline boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
 
   //incubate
   writeLine(lcd, "INCUBATE", 2);
@@ -312,6 +296,65 @@ inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin,
   // stop the motorPins
   motorStop(motorPins);
   return false;
+}
+
+/* 
+ * Function primeBuffers
+ * Function void primeBuffers()
+ * Description: execute the primeBuffers sequence           
+ * Parameters: 
+ * Side Effects: None
+ * Error Conditions: None.
+ * Return Value:
+ */
+
+/*
+ * We probably need some sort of static variable to reset once the machine is turned off for the day, and a method that will reset the primed booleans to false and either withdraw all remaining buffer in the tubes
+ * Maybe just an "Off Button," which means the prime Button could just be an "On Button"
+ * Also, I think we can probably pull a lot of our variables out of the parameters, and just let them be defined at the beginning of the header (which we already pretty much do); hence, no parameters for this method required
+ * Another potential concern: if the machine is stopped during the priming step, maybe there should be a step that withdraws all remaining fluid in that tube so there's no overflow next time
+ */
+ 
+void primeBuffers(){
+  
+  if(!IRPrimed){
+    writeLine(lcd, "PRIMING IR", 1);
+    stopState = runBuffer(IRPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+    if(stopState) {
+      tempWrite(lcd, "STOP");
+      return;
+    }
+    IRPrimed = true;
+  }
+  tempWrite(lcd, "IR PRIMED");
+  
+  if(!washPrimed){
+    writeLine(lcd, "PRIMING WASH", 1);
+    stopState = runBuffer(washPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+    if(stopState) {
+      tempWrite(lcd, "STOP");
+      return;
+    }
+    washPrimed = true;
+  }
+  tempWrite(lcd, "WASH PRIMED");
+  
+  if(!elutionPrimed){
+    writeLine(lcd, "PRIMING ELUTION", 1);
+    stopState = runBuffer(elutionPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+    if(stopState) {
+      tempWrite(lcd, "STOP");
+      return;
+    }
+    elutionPrimed = true;
+  }
+  tempWrite(lcd, "ELUTION PRIMED");
+  
+  
+  writeLine(lcd, "                    ", 1);
+  tempWrite(lcd, "BUFFERS PRIMED");
+  
+  //add vacuum step?
 }
 
 /* 
