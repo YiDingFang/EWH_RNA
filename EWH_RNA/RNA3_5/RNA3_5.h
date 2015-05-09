@@ -75,6 +75,8 @@ int elutionPins[] = {35, 34};
 int sterilizationPins[] = {43, 42};
 int ignore[] = {-1, -1};
 
+int* solutionPins[3] = {IRPins, washPins, elutionPins};
+
 boolean printCheck = false;
 
 void writeLine(LiquidCrystal lcd, String string, int line);
@@ -555,6 +557,21 @@ void runNormalMode()
  */
 void runPrimingMode()
 {
+  int currentIndex = 0; //defaults to first index of solution pin array
+  //Display UI
+  int n = 3;
+  
+  if(digitalRead(pausePin))
+  {
+    currentIndex++;
+    currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
+  }
+  else if (digitalRead(unPausePin))
+  {
+    currentIndex--;
+    currentIndex = (currentIndex%n + n) % n;
+  }
+  
 }
 
 
