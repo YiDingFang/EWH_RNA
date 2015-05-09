@@ -60,10 +60,15 @@ void setup() {
 
 void loop(){
   if(mode == 0)
+  {
+    writeLine(lcd, "Entering Normal Mode", 1);
     runNormalMode();
-
+  }
   else if (mode == 1)
+  {
+    writeLine(lcd, "Entering Priming Mode", 1);
     runPrimingMode();
+  }
 }
 
 
