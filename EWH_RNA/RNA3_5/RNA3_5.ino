@@ -62,6 +62,8 @@ void loop(){
   if(mode == 0)
     runNormalMode();
 
+  else if (mode == 1)
+    runPrimingMode();
 }
 
 

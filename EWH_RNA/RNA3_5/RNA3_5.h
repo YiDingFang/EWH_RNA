@@ -543,7 +543,21 @@ void runNormalMode()
   // clear lcd
   lcd.clear();
 
-} // void loop end
+} 
+
+/*
+ * Function runPrimingMode
+ * Function void runPrimingMode()
+ * Description: Runs the priming mode when called in loop()
+ * Parameters: None
+ * Error Conditions: None
+ * Return Value: None
+ */
+void runPrimingMode()
+{
+}
+
+
 
 
 /* 
