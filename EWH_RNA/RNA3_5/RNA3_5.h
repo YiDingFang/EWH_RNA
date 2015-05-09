@@ -87,7 +87,7 @@ void motorStop(int motorPins[]);
 void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
 void changeMode();
-boolean enterRunningMode(int);
+boolean enterRunningMode(int,String);
 void runNormalMode();
 void runPrimingMode();
 
@@ -555,17 +555,33 @@ void runNormalMode()
 /*
  * Function runPrimingMode
  * Function void runPrimingMode()
- * Description: Runs the priming mode when called in loop()
+ * Description: Runs the priming mode when called in loop(). The user can change which solution
+                to prime by pressing the pause (up) and unpause buttons (down). 
+                Pressing the start button starts priming sequence. \
+                Stop button exits priming mode.
  * Parameters: None
  * Error Conditions: None
  * Return Value: None
  */
 void runPrimingMode()
 {
+  String currentSolution;
+  
   int currentIndex = 0; //defaults to first index of solution pin array
   //Display UI
   int n = 3; // number of indices 
   
+  switch(currentIndex)
+  {
+    case 0: currentSolution = "IR";break;
+    case 1: currentSolution = "Elution";break;
+    case 2: currentSolution = "Wash";break;
+    default: return;
+  }
+  
+  writeLine(lcd,"Select Solution to Prime: " + currentSolution,1);
+  writeLine(lcd,"Press and unpause to change solution", 2);
+ 
   if(digitalRead(pausePin))
   {
     currentIndex++;
@@ -601,24 +617,19 @@ void runPrimingMode()
   Error Conditions: Index Out of Bounds
   Return Value: True if priming is completed properly. Otherwise, returns false.
 */
-boolean enterRunningMode(int solutionIndex)
+boolean enterRunningMode(int solutionIndex, String solutionName)
 {
+  boolean runningComplete = false;
   String currentSolution;
-  switch(solutionIndex)
-  {
-    case 0: currentSolution = "IR";break;
-    case 1: currentSolution = "Elution";break;
-    case 2: currentSolution = "Wash";break;
-    default: return false;
-  }
-  writeLine(lcd, "Selected Buffer: " + currentSolution, 1);
+  writeLine(lcd, "Selected Buffer: " + solutionName, 1);
   writeLine(lcd, "Hold start to perform priming",2);
   while(digitalRead(startPin))
   {
     runForward(solutionPins[solutionIndex]);
   }
   motorStop(solutionPins[solutionIndex]);
-  return true;
+  runningComplete = true;
+  return runningComplete;
 }
 
 
