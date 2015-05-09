@@ -64,7 +64,7 @@ int stopPin=50;
 int startPin=26;
 int pausePin=24;
 int unpausePin=22;
-int primePin = 22; //need to add this button in the circuit
+int primePin = 20; //need to add this button in the circuit
 
 unsigned long primeTime = 5000;
 
@@ -297,6 +297,25 @@ inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin,
   return false;
 }
 
+
+/*
+ * Function changeMode
+ * Function void changeMode()
+ * Description: changes the current mode between normal mode (mode = 0) and priming mode (mode = 1)
+ * Parameters: None
+ * Error Conditions: None
+ * Return Value: None
+*/
+
+void changeMode()
+{
+  if(mode = 0)
+    mode = 1;
+  else if (mode = 1)
+    mode = 0;
+}
+
+
 /* 
  * Function primeBuffers
  * Function void primeBuffers()
@@ -313,48 +332,48 @@ inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin,
  * Also, I think we can probably pull a lot of our variables out of the parameters, and just let them be defined at the beginning of the header (which we already pretty much do); hence, no parameters for this method required
  * Another potential concern: if the machine is stopped during the priming step, maybe there should be a step that withdraws all remaining fluid in that tube so there's no overflow next time
  */
- 
-void primeBuffers(){
-  
-  if(!IRPrimed){
-    writeLine(lcd, "PRIMING IR", 1);
-    stopState = runBuffer(IRPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-    if(stopState) {
-      tempWrite(lcd, "STOP");
-      return;
-    }
-    IRPrimed = true;
-  }
-  tempWrite(lcd, "IR PRIMED");
-  
-  if(!washPrimed){
-    writeLine(lcd, "PRIMING WASH", 1);
-    stopState = runBuffer(washPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-    if(stopState) {
-      tempWrite(lcd, "STOP");
-      return;
-    }
-    washPrimed = true;
-  }
-  tempWrite(lcd, "WASH PRIMED");
-  
-  if(!elutionPrimed){
-    writeLine(lcd, "PRIMING ELUTION", 1);
-    stopState = runBuffer(elutionPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-    if(stopState) {
-      tempWrite(lcd, "STOP");
-      return;
-    }
-    elutionPrimed = true;
-  }
-  tempWrite(lcd, "ELUTION PRIMED");
-  
-  
-  writeLine(lcd, "                    ", 1);
-  tempWrite(lcd, "BUFFERS PRIMED");
-  
-  //add vacuum step?
-}
+// 
+//void primeBuffers(){
+//  
+//  if(!IRPrimed){
+//    writeLine(lcd, "PRIMING IR", 1);
+//    stopState = runBuffer(IRPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+//    if(stopState) {
+//      tempWrite(lcd, "STOP");
+//      return;
+//    }
+//    IRPrimed = true;
+//  }
+//  tempWrite(lcd, "IR PRIMED");
+//  
+//  if(!washPrimed){
+//    writeLine(lcd, "PRIMING WASH", 1);
+//    stopState = runBuffer(washPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+//    if(stopState) {
+//      tempWrite(lcd, "STOP");
+//      return;
+//    }
+//    washPrimed = true;
+//  }
+//  tempWrite(lcd, "WASH PRIMED");
+//  
+//  if(!elutionPrimed){
+//    writeLine(lcd, "PRIMING ELUTION", 1);
+//    stopState = runBuffer(elutionPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
+//    if(stopState) {
+//      tempWrite(lcd, "STOP");
+//      return;
+//    }
+//    elutionPrimed = true;
+//  }
+//  tempWrite(lcd, "ELUTION PRIMED");
+//  
+//  
+//  writeLine(lcd, "                    ", 1);
+//  tempWrite(lcd, "BUFFERS PRIMED");
+//  
+//  //add vacuum step?
+//}
 
 /* 
  * Function name: tempWrite()
