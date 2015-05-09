@@ -50,6 +50,7 @@
 //LCD setup
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
+int mode = 0; //Normal mode = 0, Priming mode = 1
 int check=1;
 boolean stopState=false;
 boolean pauseState=false;
