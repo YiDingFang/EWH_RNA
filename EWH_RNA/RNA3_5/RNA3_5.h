@@ -86,6 +86,11 @@ unsigned long pauseCheck (int pausePin, int unpausePin, LiquidCrystal lcd, int m
 void motorStop(int motorPins[]);
 void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
+void changeMode();
+void enterRunningMode(int index);
+void runNormalMode();
+void runPrimingMode();
+
 
 double voltsToFlow(int rawADC) //Analog to Digital Conversion
 {
@@ -566,15 +571,36 @@ void runPrimingMode()
     currentIndex++;
     currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
   }
-  else if (digitalRead(unPausePin))
+  else if (digitalRead(unpausePin))
   {
     currentIndex--;
     currentIndex = (currentIndex%n + n) % n;
   }
   
+  else if (digitalRead(startPin))
+  {
+    enterRunningMode(currentIndex);
+      
+  }
+ 
+  else if (digitalRead(stopPin))
+    changeMode();
+  return;
 }
 
-
+/*
+  Function: enterRunningMode
+  Function: void enterRunningMode(int solutionIndex)
+  Description: Begins the running mode for the selected solution index. This index will be used to call the
+               motor pins for the solution.
+  Parameters: Index to begin flow of solution.
+  Error Conditions: Index Out of Bounds
+  Return Value: None
+*/
+void enterRunningMode(int solutionIndex)
+{
+  //YiDing enter code here 
+}
 
 
 /* 
