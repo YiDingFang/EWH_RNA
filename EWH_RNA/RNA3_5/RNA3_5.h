@@ -87,7 +87,7 @@ void motorStop(int motorPins[]);
 void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
 void changeMode();
-void enterRunningMode(int index);
+boolean enterRunningMode(int);
 void runNormalMode();
 void runPrimingMode();
 
@@ -564,7 +564,7 @@ void runPrimingMode()
 {
   int currentIndex = 0; //defaults to first index of solution pin array
   //Display UI
-  int n = 3;
+  int n = 3; // number of indices 
   
   if(digitalRead(pausePin))
   {
@@ -579,8 +579,12 @@ void runPrimingMode()
   
   else if (digitalRead(startPin))
   {
-    enterRunningMode(currentIndex);
-      
+    if(enterRunningMode(currentIndex))
+      writeLine(lcd, "Selected priming completed", 1);
+    else
+    {
+      writeLine(lcd, "Error occurred during priming", 1);
+    } 
   }
  
   else if (digitalRead(stopPin))
@@ -590,16 +594,31 @@ void runPrimingMode()
 
 /*
   Function: enterRunningMode
-  Function: void enterRunningMode(int solutionIndex)
+  Function: boolean enterRunningMode(int solutionIndex)
   Description: Begins the running mode for the selected solution index. This index will be used to call the
                motor pins for the solution.
   Parameters: Index to begin flow of solution.
   Error Conditions: Index Out of Bounds
-  Return Value: None
+  Return Value: True if priming is completed properly. Otherwise, returns false.
 */
-void enterRunningMode(int solutionIndex)
+boolean enterRunningMode(int solutionIndex)
 {
-  //YiDing enter code here 
+  String currentSolution;
+  switch(solutionIndex)
+  {
+    case 0: currentSolution = "IR";break;
+    case 1: currentSolution = "Elution";break;
+    case 2: currentSolution = "Wash";break;
+    default: return false;
+  }
+  writeLine(lcd, "Selected Buffer: " + currentSolution, 1);
+  writeLine(lcd, "Hold start to perform priming",2);
+  while(digitalRead(startPin))
+  {
+    runForward(solutionPins[solutionIndex]);
+  }
+  motorStop(solutionPins[solutionIndex]);
+  return true;
 }
 
 
