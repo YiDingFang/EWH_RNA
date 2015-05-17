@@ -10,7 +10,35 @@
  */
 
 #include <LiquidCrystal.h>
-#include "RNA3_5.h"
+#include "RNA.h"
+
+mode = 0; //Normal mode = 0, Priming mode = 1
+check=1;
+stopState=false;
+pauseState=false;
+startState=false;
+sterilizationCheck=false;
+IRPrimed = false;
+washPrimed = false;
+elutionPrimed = false;
+
+stopPin=50;
+startPin=26;
+pausePin=24;
+unpausePin=22;
+primePin = 20; //need to add this button in the circuit
+
+unsigned long primeTime = 5000;
+
+solenoidPins[]= {1, 2};
+IRPins[] = {33, 32};
+washPins[] = {43, 42};
+elutionPins[] = {35, 34};
+sterilizationPins[] = {43, 42};
+ignore[] = {-1, -1};
+
+int* solutionPins[3] = {IRPins, washPins, elutionPins};
+
 
 /*
  * Function name: setup
