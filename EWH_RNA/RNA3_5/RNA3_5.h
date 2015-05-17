@@ -506,7 +506,7 @@ void runNormalMode()
  */
 void runPrimingMode()
 {
-  while(mode==1){ //while loop makes sure priming mode is exited when prime button
+  while(mode==1){ //while loop makes sure priming mode is exited when prime button; actually, this while loop may not be necessary since we're checking primePin in the main file, but that file also tempWrites each time the mode is called
     String currentSolution;
     
     int currentIndex = 0; //defaults to first index of solution pin array
@@ -521,8 +521,8 @@ void runPrimingMode()
       default: return;
     }
     
-    writeLine(lcd,"Select Soln to Prime: " + currentSolution,1);  //change print statements, limited to 20 characters per line
-    writeLine(lcd,"Press pause and unpause to change solution", 2);
+    writeLine(lcd,"Select Soln: " + currentSolution,1);  //change print statements, limited to 20 characters per line
+    writeLine(lcd,"P/UP to change soln", 2);
    
     if(digitalRead(pausePin))
     {

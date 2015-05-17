@@ -6,7 +6,7 @@
  * Sources of Help: ...gotta add links here later
  *
  * Extra Comments:
- * My lady's fat, she's ugly, she's fat and she's ugly, but I love her, I need her, I really really love her
+ * My lady's fat, she's ugly, she's fat and she's ugly, but I love her, I need her, I really really love her owwwwwwwwww (sax)
  */
 
 #include <LiquidCrystal.h>
