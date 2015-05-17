@@ -21,6 +21,8 @@
  *            int unpausePin=22;
  *            int primePin = 20;
  *
+ *            int* solutionPins[3] = {IRPins, washPins, elutionPins};
+ *
  *            int airPins[] = {2, 3};
  *            int solenoidPins[]= {2, 3};
  *            int IRPins[] = {2, 3};
@@ -50,7 +52,7 @@
 //LCD setup
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
-int mode = 0; //Normal mode = 0, Priming mode = 1
+int mode = 1; //Normal mode = 0, Priming mode = 1 (Default should be prime mode)
 int check=1;
 boolean stopState=false;
 boolean pauseState=false;
@@ -65,8 +67,6 @@ int startPin=26;
 int pausePin=24;
 int unpausePin=22;
 int primePin = 22; //need to add this button in the circuit
-
-unsigned long primeTime = 5000;
 
 int solenoidPins[]= {1, 2};
 int IRPins[] = {33, 32};
@@ -91,25 +91,6 @@ boolean enterRunningMode(int,String);
 void runNormalMode();
 void runPrimingMode();
 
-
-double voltsToFlow(int rawADC) //Analog to Digital Conversion
-{
-  //do something w/ the input from an Output Pin...hmm, maybe I should rename those...
-  int magic = 1;
-  double flowRate = rawADC * magic;  //magic is performed, i.e. blackbox that needs to be filled in
-  return flowRate;
-}
-
-
-/*
-  void control(PID pid, int bufferOutputPin, Adafruit_DCMotor *bufferMotor){
- double flowRate = voltsToFlow(analogRead(bufferOutputPin));
- pid.SetInput(flowRate);
- pid.Compute();
- bufferMotor->setSpeed(pid.GetOutput());
- bufferMotor->run(FORWARD);
- }
- */
  
 /* 
  * Function postBuffer
@@ -179,46 +160,6 @@ inline boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned lo
  * Return Value:
  */
 unsigned long pauseCheck(int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]){
-/*
-  do{
-    //if paused stop the motor
-    if(pauseState) {
-      motorStop(motorPins);
-      // report the pause
-      if(!printCheck){
-        Serial.print("PAUSED");
-        (lcd).home();
-        (lcd).print("                    ");
-        (lcd).home();
-        (lcd).print("PAUSED");
-        printCheck = true;
-      }
-      goto UNPAUSE;
-    }    
-    pauseState=digitalRead(pausePin);
-    if(pauseState){
-      motorStop(motorPins);
-      if(!printCheck){
-        Serial.print("PAUSED");
-        (lcd).home();
-        (lcd).print("                    ");
-        (lcd).home();
-        (lcd).print("PAUSED");
-        printCheck = true;
-      }
-UNPAUSE: 
-      pauseState=!digitalRead(unpausePin);
-      if(!pauseState){
-        Serial.print("UNPAUSED");
-        tempWrite(lcd, "UNPAUSED");
-        printCheck = false;
-        runForward(motorPins);
-      }
-    }
-  }while (pauseState);
-  return millis();
-
-*/  
   do{
      //pauseState=digitalRead(pausePin);
     // check the state of the pausePin
@@ -565,46 +506,49 @@ void runNormalMode()
  */
 void runPrimingMode()
 {
-  String currentSolution;
-  
-  int currentIndex = 0; //defaults to first index of solution pin array
-  //Display UI
-  int n = 3; // number of indices 
-  
-  switch(currentIndex)
-  {
-    case 0: currentSolution = "IR";break;
-    case 1: currentSolution = "Elution";break;
-    case 2: currentSolution = "Wash";break;
-    default: return;
-  }
-  
-  writeLine(lcd,"Select Solution to Prime: " + currentSolution,1);
-  writeLine(lcd,"Press and unpause to change solution", 2);
- 
-  if(digitalRead(pausePin))
-  {
-    currentIndex++;
-    currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
-  }
-  else if (digitalRead(unpausePin))
-  {
-    currentIndex--;
-    currentIndex = (currentIndex%n + n) % n;
-  }
-  
-  else if (digitalRead(startPin))
-  {
-    if(enterRunningMode(currentIndex))
-      writeLine(lcd, "Selected priming completed", 1);
-    else
+  while(mode==1){ //while loop makes sure priming mode is exited when prime button
+    String currentSolution;
+    
+    int currentIndex = 0; //defaults to first index of solution pin array
+    //Display UI
+    int n = 3; // number of indices 
+    
+    switch(currentIndex)
     {
-      writeLine(lcd, "Error occurred during priming", 1);
-    } 
+      case 0: currentSolution = "IR";break;
+      case 1: currentSolution = "Elution";break;
+      case 2: currentSolution = "Wash";break;
+      default: return;
+    }
+    
+    writeLine(lcd,"Select Soln to Prime: " + currentSolution,1);  //change print statements, limited to 20 characters per line
+    writeLine(lcd,"Press pause and unpause to change solution", 2);
+   
+    if(digitalRead(pausePin))
+    {
+      currentIndex++;
+      currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
+    }
+    else if (digitalRead(unpausePin))
+    {
+      currentIndex--;
+      currentIndex = (currentIndex%n + n) % n;
+    }
+    
+    else if (digitalRead(startPin))
+    {
+      if(enterRunningMode(currentIndex, currentSolution))
+        writeLine(lcd, "Selected priming completed", 1);
+      else
+      {
+        writeLine(lcd, "Error occurred during priming", 1);
+      } 
+    }
+   
+    if (digitalRead(primePin)){
+      changeMode();
+    }
   }
- 
-  else if (digitalRead(stopPin))
-    changeMode();
   return;
 }
 
@@ -620,14 +564,15 @@ void runPrimingMode()
 boolean enterRunningMode(int solutionIndex, String solutionName)
 {
   boolean runningComplete = false;
-  String currentSolution;
-  writeLine(lcd, "Selected Buffer: " + solutionName, 1);
-  writeLine(lcd, "Hold start to perform priming",2);
-  while(digitalRead(startPin))
-  {
-    runForward(solutionPins[solutionIndex]);
+  while(!digitalRead(stopPin)){
+    writeLine(lcd, "Selected Buffer: " + solutionName, 1);
+    writeLine(lcd, "Hold start to prime",2);
+    while(digitalRead(startPin))
+    {
+      runForward(solutionPins[solutionIndex]);
+    }
+    motorStop(solutionPins[solutionIndex]);
   }
-  motorStop(solutionPins[solutionIndex]);
   runningComplete = true;
   return runningComplete;
 }
@@ -643,54 +588,6 @@ boolean enterRunningMode(int solutionIndex, String solutionName)
  * Return Value:
  */
 
-/*
- * We probably need some sort of static variable to reset once the machine is turned off for the day, and a method that will reset the primed booleans to false and either withdraw all remaining buffer in the tubes
- * Maybe just an "Off Button," which means the prime Button could just be an "On Button"
- * Also, I think we can probably pull a lot of our variables out of the parameters, and just let them be defined at the beginning of the header (which we already pretty much do); hence, no parameters for this method required
- * Another potential concern: if the machine is stopped during the priming step, maybe there should be a step that withdraws all remaining fluid in that tube so there's no overflow next time
- */
-// 
-//void primeBuffers(){
-//  
-//  if(!IRPrimed){
-//    writeLine(lcd, "PRIMING IR", 1);
-//    stopState = runBuffer(IRPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-//    if(stopState) {
-//      tempWrite(lcd, "STOP");
-//      return;
-//    }
-//    IRPrimed = true;
-//  }
-//  tempWrite(lcd, "IR PRIMED");
-//  
-//  if(!washPrimed){
-//    writeLine(lcd, "PRIMING WASH", 1);
-//    stopState = runBuffer(washPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-//    if(stopState) {
-//      tempWrite(lcd, "STOP");
-//      return;
-//    }
-//    washPrimed = true;
-//  }
-//  tempWrite(lcd, "WASH PRIMED");
-//  
-//  if(!elutionPrimed){
-//    writeLine(lcd, "PRIMING ELUTION", 1);
-//    stopState = runBuffer(elutionPins, primeTime, stopPin, pausePin, unpausePin, pauseState, lcd);
-//    if(stopState) {
-//      tempWrite(lcd, "STOP");
-//      return;
-//    }
-//    elutionPrimed = true;
-//  }
-//  tempWrite(lcd, "ELUTION PRIMED");
-//  
-//  
-//  writeLine(lcd, "                    ", 1);
-//  tempWrite(lcd, "BUFFERS PRIMED");
-//  
-//  //add vacuum step?
-//}
 
 /* 
  * Function name: tempWrite()
