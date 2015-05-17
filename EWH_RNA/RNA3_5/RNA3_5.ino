@@ -59,15 +59,15 @@ void setup() {
  */
 
 void loop(){
-  
-  if(digitalRead(primePin)){
+/*  
+  if(digitalRead(modePin)){
     changeMode();
   }
-  
+ */ 
   if(mode == 0)
   {
-    tempWrite(lcd, "Entering Normal Mode");
-    runNormalMode();
+//    tempWrite(lcd, "Entering Extraction Mode");
+      runExtractionMode();
   }
   else if (mode == 1)
   {

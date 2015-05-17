@@ -19,7 +19,7 @@
  *            int startPin=26;
  *            int pausePin=24;
  *            int unpausePin=22;
- *            int primePin = 20;
+ *            int modePin = 20;
  *
  *            int* solutionPins[3] = {IRPins, washPins, elutionPins};
  *
@@ -58,15 +58,12 @@ boolean stopState=false;
 boolean pauseState=false;
 boolean startState=false;
 boolean sterilizationCheck=false;
-boolean IRPrimed = false;
-boolean washPrimed = false;
-boolean elutionPrimed = false;
 
 int stopPin=50;
 int startPin=26;
 int pausePin=24;
 int unpausePin=22;
-int primePin = 22; //need to add this button in the circuit
+int modePin = 20; //need to add this button in the circuit
 
 int solenoidPins[]= {1, 2};
 int IRPins[] = {33, 32};
@@ -88,7 +85,7 @@ void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
 void changeMode();
 boolean enterRunningMode(int,String);
-void runNormalMode();
+void runExtractionMode();
 void runPrimingMode();
 
  
@@ -264,7 +261,7 @@ void changeMode()
 }
 
 /*
- * Function runNormalMode
+ * Function runExtractionMode
  * Function void runNormalMode()
  * Runs the normal running mode
  * Parameter: None
@@ -272,7 +269,7 @@ void changeMode()
  * Return Value: None
 */
 
-void runNormalMode()
+void runExtractionMode()
 {
   // clear the LCD screen
   lcd.clear();
@@ -506,50 +503,52 @@ void runNormalMode()
  */
 void runPrimingMode()
 {
-  while(mode==1){ //while loop makes sure priming mode is exited when prime button; actually, this while loop may not be necessary since we're checking primePin in the main file, but that file also tempWrites each time the mode is called
+  while(mode==1){ //while loop makes sure priming mode is exited when prime button; actually, this while loop may not be necessary since we're checking modePin in the main file, but that file also tempWrites each time the mode is called
     String currentSolution;
-    
     int currentIndex = 0; //defaults to first index of solution pin array
     //Display UI
-    int n = 3; // number of indices 
-    
-    switch(currentIndex)
-    {
-      case 0: currentSolution = "IR";break;
-      case 1: currentSolution = "Elution";break;
-      case 2: currentSolution = "Wash";break;
-      default: return;
-    }
-    
-    writeLine(lcd,"Select Soln: " + currentSolution,1);  //change print statements, limited to 20 characters per line
-    writeLine(lcd,"P/UP to change soln", 2);
-   
-    if(digitalRead(pausePin))
-    {
-      currentIndex++;
-      currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
-    }
-    else if (digitalRead(unpausePin))
-    {
-      currentIndex--;
-      currentIndex = (currentIndex%n + n) % n;
-    }
-    
-    else if (digitalRead(startPin))
-    {
+    int n = 3; // number of indices
+    writeLine(lcd,"Select Soln: " ,1);  //change print statements, limited to 20 characters per line
+    writeLine(lcd,"P/UP to change soln", 2); 
+  while(!digitalRead(startPin)){    
+      switch(currentIndex)
+      {
+        case 0: currentSolution = "IR";break;
+        case 1: currentSolution = "Elution";break;
+        case 2: currentSolution = "Wash";break;
+        default: return;
+      }
+      
+      lcd.setCursor(13, 1);
+      lcd.print("       ");
+      lcd.setCursor(13,1);
+      lcd.print(currentSolution);
+     
+      if(digitalRead(pausePin))
+      {
+        currentIndex++;
+        currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
+      }
+      else if (digitalRead(unpausePin))
+      {
+        currentIndex--;
+        currentIndex = (currentIndex%n + n) % n;
+      }
+  }
+    lcd.clear();
       if(enterRunningMode(currentIndex, currentSolution))
         writeLine(lcd, "Selected priming completed", 1);
       else
       {
         writeLine(lcd, "Error occurred during priming", 1);
       } 
-    }
-   
-    if (digitalRead(primePin)){
+    
+/*   
+    if (digitalRead(modePin)){
       changeMode();
     }
+    */
   }
-  return;
 }
 
 /*
