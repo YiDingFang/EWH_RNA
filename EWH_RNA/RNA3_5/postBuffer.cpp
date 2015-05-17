@@ -24,7 +24,7 @@
  * Return Value:
  */
  
-inline boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
+boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd){
 
   //incubate
   writeLine(lcd, "INCUBATE", 2);

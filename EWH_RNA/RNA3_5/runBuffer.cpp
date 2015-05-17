@@ -24,7 +24,7 @@
  * Return Value:
  */
  
-inline boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd){
+boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd){
   // set the flowrate
   double flowRate = 1;
   // set up the LCD display based on runBuffer

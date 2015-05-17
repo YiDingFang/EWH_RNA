@@ -12,34 +12,6 @@
 #include <LiquidCrystal.h>
 #include "RNA.h"
 
-mode = 0; //Normal mode = 0, Priming mode = 1
-check=1;
-stopState=false;
-pauseState=false;
-startState=false;
-sterilizationCheck=false;
-IRPrimed = false;
-washPrimed = false;
-elutionPrimed = false;
-
-stopPin=50;
-startPin=26;
-pausePin=24;
-unpausePin=22;
-primePin = 20; //need to add this button in the circuit
-
-unsigned long primeTime = 5000;
-
-solenoidPins[]= {1, 2};
-IRPins[] = {33, 32};
-washPins[] = {43, 42};
-elutionPins[] = {35, 34};
-sterilizationPins[] = {43, 42};
-ignore[] = {-1, -1};
-
-int* solutionPins[3] = {IRPins, washPins, elutionPins};
-
-
 /*
  * Function name: setup
  * Function prototype: void setup{}
@@ -51,6 +23,35 @@ int* solutionPins[3] = {IRPins, washPins, elutionPins};
  * Return Value: 0
  *
  */
+
+int stopPin=50;
+int startPin=26;
+int pausePin=24;
+int unpausePin=22;
+int primePin = 22; //need to add this button in the circuit
+
+int solenoidPins[]= {1, 2};
+int IRPins[] = {33, 32};
+int washPins[] = {43, 42};
+int elutionPins[] = {35, 34};
+int sterilizationPins[] = {43, 42}; 
+int ignore[] = {-1, -1};
+
+int mode = 1; //Normal mode = 0, Priming mode = 1 (Default should be prime mode)
+int check=1;
+boolean stopState=false;
+boolean pauseState=false;
+boolean startState=false;
+boolean sterilizationCheck=false;
+boolean IRPrimed = false;
+boolean washPrimed = false;
+boolean elutionPrimed = false;
+
+boolean printCheck = false;
+
+
+int* solutionPins[3] = {IRPins, washPins, elutionPins};
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 void setup() {
   lcd.begin(20, 4);
@@ -87,6 +88,11 @@ void setup() {
  */
 
 void loop(){
+  
+  if(digitalRead(primePin)){
+    changeMode();
+  }
+  
   if(mode == 0)
   {
     tempWrite(lcd, "Entering Normal Mode");
@@ -97,6 +103,7 @@ void loop(){
     tempWrite(lcd, "Entering Priming Mode");
     runPrimingMode();
   }
+  
 }
 
 
