@@ -56,12 +56,15 @@ boolean stopState=false;
 boolean pauseState=false;
 boolean startState=false;
 boolean sterilizationCheck=false;
+boolean IRPrimed = false;
+boolean washPrimed = false;
+boolean elutionPrimed = false;
 
 int stopPin=50;
 int startPin=26;
 int pausePin=24;
 int unpausePin=22;
-int primePin = 20; //need to add this button in the circuit
+int primePin = 22; //need to add this button in the circuit
 
 unsigned long primeTime = 5000;
 
