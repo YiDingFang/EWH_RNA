@@ -93,7 +93,7 @@ void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
 void changeMode();
 
-boolean enterRunningMode(int,String);
+void enterRunningMode(int,String);
 
 boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd);
 boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd);
