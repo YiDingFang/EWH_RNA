@@ -56,9 +56,6 @@ boolean stopState=false;
 boolean pauseState=false;
 boolean startState=false;
 boolean sterilizationCheck=false;
-boolean IRPrimed = false;
-boolean washPrimed = false;
-boolean elutionPrimed = false;
 
 int stopPin=50;
 int startPin=26;
