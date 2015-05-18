@@ -88,7 +88,7 @@ void setup() {
  */
 
 void loop(){
-  
+/*  
   if(digitalRead(primePin)){
     changeMode();
   }
@@ -103,6 +103,8 @@ void loop(){
     tempWrite(lcd, "Entering Priming Mode");
     runPrimingMode();
   }
+  */
+  runNormalMode();
   
 }
 
