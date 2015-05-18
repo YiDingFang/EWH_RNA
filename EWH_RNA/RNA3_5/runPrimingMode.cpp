@@ -30,15 +30,8 @@ void runPrimingMode()
   //Display UI
   int n = 3; // number of indices 
   while(!digitalRead(startPin)){
-    switch(currentIndex)
-    {
-      case 0: currentSolution = "IR";break;
-      case 1: currentSolution = "Elution";break;
-      case 2: currentSolution = "Wash";break;
-      default: return;
-    }
     
-    writeLine(lcd,"Select Soln: " + currentSolution,1);
+    writeLine(lcd,"Select Soln: " + solutionNames[solutionIndex],1);
     writeLine(lcd,"P/UP to change soln", 2);
    
     if(digitalRead(pausePin))
@@ -53,7 +46,9 @@ void runPrimingMode()
     }
   }
 
-    enterRunningMode(currentIndex, currentSolution);
+  mode = 2;
+
+  //  enterRunningMode(currentIndex, currentSolution);
 
  /*
   if(digitalRead(modePin)){

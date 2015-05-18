@@ -23,8 +23,8 @@
 
 void changeMode()
 {
-  if(mode = 0)
+  if(mode == 0)
     mode = 1;
-  else if (mode = 1)
+  else if (mode == 1)
     mode = 0;
 }
