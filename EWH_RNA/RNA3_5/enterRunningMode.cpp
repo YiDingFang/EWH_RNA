@@ -20,11 +20,10 @@
   Error Conditions: Index Out of Bounds
   Return Value: True if priming is completed properly. Otherwise, returns false.
 */
-void enterRunningMode(int solutionIndex, String solutionName)
+void enterRunningMode()
 {
-  String currentSolution;
-  writeLine(lcd, "Selected Buffer: " + solutionName, 1);
-  writeLine(lcd, "Hold start to prime",2);
+  writeLine(lcd, "Buffer: " + solutionNames[solutionIndex], 1);
+  writeLine(lcd, "Hold START to prime",2);
   while(!digitalRead(stopPin)){
     while(digitalRead(startPin))
     {
@@ -32,5 +31,6 @@ void enterRunningMode(int solutionIndex, String solutionName)
     }
     motorStop(solutionPins[solutionIndex]);
   }
-  writeLine(lcd, "Selected priming completed", 1);
+  mode = 1;
+  tempWrite(lcd, "Priming completed");
 }

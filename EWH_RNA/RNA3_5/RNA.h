@@ -76,12 +76,11 @@ extern boolean stopState;
 extern boolean pauseState;
 extern boolean startState;
 extern boolean sterilizationCheck;
-extern boolean IRPrimed;
-extern boolean washPrimed;
-extern boolean elutionPrimed;
 
 extern boolean printCheck;
 extern int* solutionPins[3];
+extern String solutionNames[3];
+extern int solutionIndex;
 
 
 void writeLine(LiquidCrystal lcd, String string, int line);
@@ -93,7 +92,7 @@ void runForward(int motorPins[]);
 void runBackward(int motorPins[]);
 void changeMode();
 
-void enterRunningMode(int,String);
+void enterRunningMode();
 
 boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd);
 boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd);

@@ -43,14 +43,14 @@ boolean stopState=false;
 boolean pauseState=false;
 boolean startState=false;
 boolean sterilizationCheck=false;
-boolean IRPrimed = false;
-boolean washPrimed = false;
-boolean elutionPrimed = false;
 
 boolean printCheck = false;
 
 
 int* solutionPins[3] = {IRPins, washPins, elutionPins};
+String solutionNames[3] = {"IR", "WASH", "ELUTION"};
+int solutionIndex = 0;
+
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 void setup() {
@@ -95,7 +95,7 @@ void loop(){
 */  
   if(mode == 0)
   {
-    tempWrite(lcd, "Entering Normal Mode");
+    tempWrite(lcd, "Entering Normal Mode"); //should change this to make sure the tempWrite statement is not repeated; possible make normalMode a self-contained while-loop
     runNormalMode();
   }
   else if (mode == 1)
@@ -103,9 +103,11 @@ void loop(){
     tempWrite(lcd, "Entering Priming Mode");
     runPrimingMode();
   }
-  */
-  runNormalMode();
-  
+
+  else if(mode == 2){
+    tempWrite(lcd, "Preparing to Prime");
+    enterRunningMode();
+  }
 }
 
 
