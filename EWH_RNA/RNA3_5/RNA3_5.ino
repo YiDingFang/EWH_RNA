@@ -27,7 +27,7 @@
 int stopPin=28;
 int startPin=26;
 int pausePin=24;
-int unpausePin=22;
+int unpausePin=66;
 int primePin = 22; //need to add this button in the circuit
 
 int solenoidPins[]= {1, 2};
@@ -45,7 +45,7 @@ boolean startState=false;
 boolean sterilizationCheck=false;
 
 boolean printCheck = false;
-
+boolean normalCheck = false;
 
 int* solutionPins[3] = {IRPins, washPins, elutionPins};
 String solutionNames[3] = {"IR", "WASH", "ELUTION"};
@@ -88,14 +88,12 @@ void setup() {
  */
 
 void loop(){
-/*  
-  if(digitalRead(primePin)){
-    changeMode();
-  }
-*/  
+  
   if(mode == 0)
   {
-    tempWrite(lcd, "Entering Normal Mode"); //should change this to make sure the tempWrite statement is not repeated; possible make normalMode a self-contained while-loop
+    if(!normalCheck){
+      tempWrite(lcd, "Entering Normal Mode");
+    }
     runNormalMode();
   }
   else if (mode == 1)
@@ -108,6 +106,7 @@ void loop(){
     enterRunningMode();
   }
   
+ 
 }
 
 
