@@ -24,7 +24,7 @@
  *
  */
 
-int stopPin=50;
+int stopPin=28;
 int startPin=26;
 int pausePin=24;
 int unpausePin=22;
@@ -100,7 +100,7 @@ void loop(){
   }
   else if (mode == 1)
   {
-    tempWrite(lcd, "Entering Priming Mode");
+    tempWrite(lcd, "Entering Prime Mode");
     runPrimingMode();
   }
   else if(mode == 2){
