@@ -24,9 +24,6 @@
  */
 void runPrimingMode()
 {
-  String currentSolution;
-  
-  int currentIndex = 0; //defaults to first index of solution pin array
   //Display UI
   int n = 3; // number of indices 
   while(!digitalRead(startPin)){
@@ -36,13 +33,12 @@ void runPrimingMode()
    
     if(digitalRead(pausePin))
     {
-      currentIndex++;
-      currentIndex = (currentIndex%n + n) % n; // Keeps the index from reaching out of bounds
+      solutionIndex = (solutionIndex%n + n) % n; // Keeps the index from reaching out of bounds
     }
     else if (digitalRead(unpausePin))
     {
-      currentIndex--;
-      currentIndex = (currentIndex%n + n) % n;
+      solutionIndex--;
+      solutionIndex = (solutionIndex%n + n) % n;
     }
   }
 
