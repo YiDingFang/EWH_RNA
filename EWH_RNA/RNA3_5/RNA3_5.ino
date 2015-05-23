@@ -106,7 +106,6 @@ void loop(){
     tempWrite(lcd, "Preparing to Prime");
     enterRunningMode();
   }
-
 }
 
 
