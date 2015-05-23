@@ -24,15 +24,21 @@
  */
 void runPrimingMode()
 {
+  boolean modeChanged=false;
   //Display UI
   int n = 3; // number of indices 
   while(!digitalRead(startPin)){
     
+    if(digitalRead(primePin)){
+      modeChanged=true;
+      break;
+    }
     writeLine(lcd,"Select Soln: " + solutionNames[solutionIndex],1);
     writeLine(lcd,"P/UP to change soln", 2);
    
     if(digitalRead(pausePin))
     {
+      solutionIndex++;
       solutionIndex = (solutionIndex%n + n) % n; // Keeps the index from reaching out of bounds
     }
     else if (digitalRead(unpausePin))
@@ -42,13 +48,11 @@ void runPrimingMode()
     }
   }
 
-  mode = 2;
-
-  //  enterRunningMode(currentIndex, currentSolution);
-
- /*
-  if(digitalRead(modePin)){
+  if(modeChanged){
     changeMode();
-    }
-    */
+  }
+  else{
+    mode = 2;
+  }
+    
 }
