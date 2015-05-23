@@ -64,5 +64,5 @@ void runPrimingMode()
   else{
     mode = 2;
   }
-    
+ lcd.clear();   
 }

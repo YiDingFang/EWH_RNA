@@ -23,9 +23,14 @@
 
 void ExtractionMode()
 {
+  static boolean extractionPrintCheck;
   normalCheck = true;
+  stopState=false;
   // clear the LCD screen
-  lcd.clear();
+  if(!extractionPrintCheck){
+    writeLine(lcd, "EXTRACTION STANDBY", 1);
+    extractionPrintCheck=true;
+  }
   
    if(digitalRead(primePin)){
     changeMode();
@@ -35,6 +40,7 @@ void ExtractionMode()
   startState=digitalRead(startPin);
   // print start and indicate start with check boolean
   if(startState==true){
+    lcd.clear();
     Serial.print("START");
     tempWrite(lcd, "START");
     check = 1;
@@ -54,6 +60,7 @@ void ExtractionMode()
   if(stopState) {
     // if stop has been pressed report and end loop
     Serial.print("check1");
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -67,6 +74,7 @@ void ExtractionMode()
   // check the stop pin 
   stopState=digitalRead(stopPin);
   if(stopState) {
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -84,6 +92,7 @@ void ExtractionMode()
 
     // check stops are necessary
     if(stopState) {
+      extractionPrintCheck = false;
       tempWrite(lcd, "STOP");
       return;
     }
@@ -95,6 +104,7 @@ void ExtractionMode()
   stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
 
   if(stopState) {
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -120,6 +130,7 @@ void ExtractionMode()
     stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
+      extractionPrintCheck = false;
       tempWrite(lcd, "STOP");
       return;
     }
@@ -131,6 +142,7 @@ void ExtractionMode()
   stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
 
   if(stopState) {
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -156,6 +168,7 @@ void ExtractionMode()
     stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
+      extractionPrintCheck = false;
       tempWrite(lcd, "STOP");
       return;
     }
@@ -167,6 +180,7 @@ void ExtractionMode()
   stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
 
   if(stopState) {
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -193,6 +207,7 @@ void ExtractionMode()
     stopState = runBuffer(elutionPins, 500UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
+      extractionPrintCheck = false;
       tempWrite(lcd, "STOP");
       return;
     }
@@ -204,6 +219,7 @@ void ExtractionMode()
   stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);
 
   if(stopState) {
+    extractionPrintCheck = false;
     tempWrite(lcd, "STOP");
     return;
   }
@@ -230,6 +246,7 @@ void ExtractionMode()
 
     // check for the stop state
     if(stopState) {
+      extractionPrintCheck = false;
       tempWrite(lcd, "STOP");
       return;
     }
@@ -240,7 +257,8 @@ void ExtractionMode()
     lcd.clear();
     tempWrite(lcd, "STERILIZED");
     pauseState = false;
-  }   
+  } 
+  extractionPrintCheck = false;  
   // report end of protocol
   tempWrite(lcd, "PROTOCOL COMPLETE");
   // clear lcd

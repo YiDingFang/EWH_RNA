@@ -92,7 +92,7 @@ void loop(){
   if(mode == 0)
   {
     if(!normalCheck){
-      tempWrite(lcd, "Entering Normal Mode");
+      tempWrite(lcd, "Entering EXTRACTION");
     }
     ExtractionMode();
   }
