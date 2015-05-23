@@ -1,3 +1,42 @@
 Project Description:
+--------------------------------------------------------------------------------
+Prime Mode: 
+	Interface which allows user to choose which buffer to prime.
+	
+			 	Pause
+	 ---------------
+	| IR		|		 	
+	 ---------------
+	| Wash		|
+	 ---------------
+	| Elution	|
+	 ---------------
+				Unpause
 
-EWH! Yay
+-------------On Pause: 	move upwards in the menu of modes to use
+-----------On unPause:	move downwards in the menue of Modes to use
+-------------On Start: 	selects are particular buffer to prime and locks into
+			enterRunningMode
+--------On changeMode:	switches to normal mode
+
+--------------------------------------------------------------------------------
+enterRunningMode: 
+	dispenses reagant while button is held. to be used until tubing is filled
+	
+-------------On Start: 	dispenses fluid
+--------------On Stop: 	exits enterRunningMode and returns to Prime Mode
+
+--------------------------------------------------------------------------------
+Normal Mode:
+	runs the solution through the tubing
+
+-------------On Start: 	begin procedure
+------------ On Pause: 	temporarily pause procedure while maintaining values for
+			internal timers
+-----------On Unpause: 	start the procedure again
+--------------On Stop:	stop the entire procedure without maintaining run times
+			for buffers. Exit the procedure until Start or 
+			changeMode is selected
+--------On ChangeMode:	returns to PrimeMode
+
+
