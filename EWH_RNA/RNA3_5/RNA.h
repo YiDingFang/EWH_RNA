@@ -98,7 +98,7 @@ void enterRunningMode();
 boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd);
 boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd);
 
-void runNormalMode();
+void ExtractionMode();
 void runPrimingMode();
 
 

@@ -1,5 +1,5 @@
 /*
- * Filename: runNormalMode
+ * Filename: ExtractionMode
  * Author: UCSD_EWH RNA
  * Description: Header file containing methods for RNA extraction.
  * Date: 
@@ -21,7 +21,7 @@
  * Return Value: None
 */
 
-void runNormalMode()
+void ExtractionMode()
 {
   normalCheck = true;
   // clear the LCD screen

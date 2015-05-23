@@ -26,25 +26,35 @@ void runPrimingMode()
 {
   boolean modeChanged=false;
   //Display UI
-  int n = 3; // number of indices 
+  int n = 3; // number of indices
+  writeLine(lcd,"Select Soln: ",1); 
+  writeLine(lcd,"P/UP to change soln", 2);
+  lcd.setCursor(13,1);
+  lcd.print(solutionNames[solutionIndex]); 
   while(!digitalRead(startPin)){
     
     if(digitalRead(primePin)){
       modeChanged=true;
       break;
-    }
-    writeLine(lcd,"Select Soln: " + solutionNames[solutionIndex],1);
-    writeLine(lcd,"P/UP to change soln", 2);
-   
+    }   
+ 
     if(digitalRead(pausePin))
     {
       solutionIndex++;
       solutionIndex = (solutionIndex%n + n) % n; // Keeps the index from reaching out of bounds
+      lcd.setCursor(13,1);
+      lcd.print("       ");
+      lcd.setCursor(13,1);
+      lcd.print(solutionNames[solutionIndex]);
     }
     else if (digitalRead(unpausePin))
     {
       solutionIndex--;
       solutionIndex = (solutionIndex%n + n) % n;
+      lcd.setCursor(13,1);
+      lcd.print("       ");
+      lcd.setCursor(13,1);
+      lcd.print(solutionNames[solutionIndex]);
     }
   }
 

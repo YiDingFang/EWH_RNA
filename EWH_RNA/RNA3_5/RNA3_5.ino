@@ -27,8 +27,8 @@
 int stopPin=28;
 int startPin=26;
 int pausePin=24;
-int unpausePin=66;
-int primePin = 22; //need to add this button in the circuit
+int unpausePin=22;
+int primePin = 30; //need to add this button in the circuit
 
 int solenoidPins[]= {1, 2};
 int IRPins[] = {33, 32};
@@ -94,7 +94,7 @@ void loop(){
     if(!normalCheck){
       tempWrite(lcd, "Entering Normal Mode");
     }
-    runNormalMode();
+    ExtractionMode();
   }
   else if (mode == 1)
   {
