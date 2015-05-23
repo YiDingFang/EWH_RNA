@@ -23,8 +23,14 @@
 
 void runNormalMode()
 {
+  normalCheck = true;
   // clear the LCD screen
   lcd.clear();
+  
+   if(digitalRead(primePin)){
+    changeMode();
+  }
+  
   // check if there is a button press or not
   startState=digitalRead(startPin);
   // print start and indicate start with check boolean

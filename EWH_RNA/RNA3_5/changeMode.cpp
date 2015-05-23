@@ -27,4 +27,6 @@ void changeMode()
     mode = 1;
   else if (mode == 1)
     mode = 0;
+    
+    normalCheck = false;
 }
