@@ -88,7 +88,7 @@ void ExtractionMode()
     writeLine(lcd, "BUFFER", 2);
 
     // run the IR buffer for 2000ms
-    stopState = runBuffer(IRPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    stopState = runBuffer(0, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     // check stops are necessary
     if(stopState) {
@@ -127,7 +127,7 @@ void ExtractionMode()
     writeLine(lcd, "BUFFER", 2);
 
     //run wash buffer for 2000ms
-    stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    stopState = runBuffer(1, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
       extractionPrintCheck = false;
@@ -165,7 +165,7 @@ void ExtractionMode()
     writeLine(lcd, "BUFFER", 2);
 
     // run wash buffer fro 2000ms
-    stopState = runBuffer(washPins, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    stopState = runBuffer(1, 2000UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
       extractionPrintCheck = false;
@@ -204,7 +204,7 @@ void ExtractionMode()
     writeLine(lcd, "BUFFER", 2);
     // run the elution round
 
-    stopState = runBuffer(elutionPins, 500UL, stopPin, pausePin, unpausePin, pauseState, lcd);
+    stopState = runBuffer(2, 500UL, stopPin, pausePin, unpausePin, pauseState, lcd);
 
     if(stopState) {
       extractionPrintCheck = false;
@@ -233,31 +233,7 @@ void ExtractionMode()
   // call pausecheck and wait for unpause
   pauseCheck(pausePin, unpausePin, lcd, ignore);
 
-
-  // sterilization round (ethanol)
-  if(check==5)
-  {
-    // report sterilization
-    writeLine(lcd, "STERILIZING...", 1);
-    writeLine(lcd, "SOLUTION", 2);
-
-    // run sterilizatin round for 500ms
-    stopState = runBuffer(sterilizationPins, 500UL, stopPin, pausePin, unpausePin, pauseState, lcd);
-
-    // check for the stop state
-    if(stopState) {
-      extractionPrintCheck = false;
-      tempWrite(lcd, "STOP");
-      return;
-    }
-    // run the postBuffer for sterilization
-
-    stopState= postBuffer(2000UL, solenoidPins, 2000UL, stopPin, stopState, lcd);  
-
-    lcd.clear();
-    tempWrite(lcd, "STERILIZED");
-    pauseState = false;
-  } 
+ 
   extractionPrintCheck = false;  
   // report end of protocol
   tempWrite(lcd, "PROTOCOL COMPLETE");
