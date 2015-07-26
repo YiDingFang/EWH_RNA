@@ -49,13 +49,14 @@ boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long sole
   (lcd).print(":");
   unsigned long timeSolenoid = solenoidTime + millis();
   while(millis()<timeSolenoid){
-    runForward(solenoidPins);
+    runMotor(solenoidPins);
     if(digitalRead(stopPin)){
       motorStop(solenoidPins);
       return true;
     }
-    unsigned long timeDif = timeSolenoid - millis();
-    timeSolenoid = timeDif + pauseCheck(pausePin, unpausePin, lcd, solenoidPins);
+//  can't check for pause while solenoid is operating because pause method is based on demux, not motorpins[]    
+//    unsigned long timeDif = timeSolenoid - millis();
+//    timeSolenoid = timeDif + pauseCheck(pausePin, unpausePin, lcd, solenoidPins);
     countDown(lcd, timeSolenoid - millis());
   }
   motorStop(solenoidPins);

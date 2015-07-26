@@ -30,12 +30,14 @@ int pausePin=24;
 int unpausePin=22;
 int primePin = 30; //need to add this button in the circuit
 
+int s0 = 6;
+int s1 = 7;
+
 int solenoidPins[]= {1, 2};
-int IRPins[] = {33, 32};
-int washPins[] = {43, 42};
-int elutionPins[] = {35, 34};
-int sterilizationPins[] = {43, 42}; 
-int ignore[] = {-1, -1};
+int IRPins[]= {32, 33};
+int washPins[]= {32, 33};
+int elutionPins[]= {32, 33};
+int ignore= -1;
 
 int mode = 1; //Normal mode = 0, Priming mode = 1 (Default should be prime mode)
 int check=1;
@@ -47,7 +49,7 @@ boolean sterilizationCheck=false;
 boolean printCheck = false;
 boolean normalCheck = false;
 
-int* solutionPins[3] = {IRPins, washPins, elutionPins};
+int solutionPins[3] = {0, 1, 2}; //IR, Wash, Elution
 String solutionNames[3] = {"IR", "WASH", "ELUTION"};
 int solutionIndex = 0;
 
@@ -61,14 +63,8 @@ void setup() {
   pinMode(unpausePin, INPUT);
   pinMode(solenoidPins[0], OUTPUT);
   pinMode(solenoidPins[1], OUTPUT);
-  pinMode(IRPins[0], OUTPUT);
-  pinMode(IRPins[1], OUTPUT);
-  pinMode(washPins[0], OUTPUT);
-  pinMode(washPins[1], OUTPUT);
-  pinMode(elutionPins[0], OUTPUT);
-  pinMode(elutionPins[1], OUTPUT);
-  pinMode(sterilizationPins[0], OUTPUT);
-  pinMode(sterilizationPins[1], OUTPUT);
+  pinMode(s0, OUTPUT);
+  pinMode(s1, OUTPUT);
   Serial.begin(9600);
   Serial.print("set up");
 }

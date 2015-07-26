@@ -62,12 +62,16 @@ extern int pausePin;
 extern int unpausePin;
 extern int primePin; //need to add this button in the circuit
 
+
+//selection pins for demux
+extern int s0;
+extern int s1;
+
 extern int solenoidPins[];
 extern int IRPins[];
 extern int washPins[];
 extern int elutionPins[];
-extern int sterilizationPins[];
-extern int ignore[];
+extern int ignore;
 
 
 extern int mode; //Normal mode = 0, Priming mode = 1 (Default should be prime mode)
@@ -79,7 +83,7 @@ extern boolean sterilizationCheck;
 
 extern boolean printCheck;
 extern boolean normalCheck;
-extern int* solutionPins[3];
+extern int solutionPins[3];
 extern String solutionNames[3];
 extern int solutionIndex;
 
@@ -87,16 +91,18 @@ extern int solutionIndex;
 void writeLine(LiquidCrystal lcd, String string, int line);
 void countDown(LiquidCrystal lcd, unsigned long timeLeft);
 void tempWrite (LiquidCrystal lcd, String string);
-unsigned long pauseCheck (int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]);
+unsigned long pauseCheck (int pausePin, int unpausePin, LiquidCrystal lcd, int motor);
 void motorStop(int motorPins[]);
-void runForward(int motorPins[]);
-void runBackward(int motorPins[]);
+void motorStop();
+void runMotor(int motorPins[]);
+void runMotor(int motor);
 void changeMode();
+void runForward(int motorPins[]);
 
 void enterRunningMode();
 
 boolean postBuffer(unsigned long rxnTime, int solenoidPins[], unsigned long solenoidTime, int stopPin, boolean stopState, LiquidCrystal lcd);
-boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd);
+boolean runBuffer(int motor, unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd);
 
 void ExtractionMode();
 void runPrimingMode();
