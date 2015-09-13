@@ -23,12 +23,53 @@
  * Error Conditions: None.
  * Return Value:
  */
-unsigned long pauseCheck(int pausePin, int unpausePin, LiquidCrystal lcd, int motor){
+unsigned long pauseCheck(int pausePin, int unpausePin, LiquidCrystal lcd, int motorPins[]){
+  // older version of method
+  /*
+  do{
+    //if paused stop the motor
+    if(pauseState) {
+      motorStop(motorPins);
+      // report the pause
+      if(!printCheck){
+        Serial.print("PAUSED");
+        (lcd).home();
+        (lcd).print("                    ");
+        (lcd).home();
+        (lcd).print("PAUSED");
+        printCheck = true;
+      }
+      goto UNPAUSE;
+    }    
+    pauseState=digitalRead(pausePin);
+    if(pauseState){
+      motorStop(motorPins);
+      if(!printCheck){
+        Serial.print("PAUSED");
+        (lcd).home();
+        (lcd).print("                    ");
+        (lcd).home();
+        (lcd).print("PAUSED");
+        printCheck = true;
+      }
+UNPAUSE: 
+      pauseState=!digitalRead(unpausePin);
+      if(!pauseState){
+        Serial.print("UNPAUSED");
+        tempWrite(lcd, "UNPAUSED");
+        printCheck = false;
+        runForward(motorPins);
+      }
+    }
+  }while (pauseState);
+  return millis();
+
+*/  
   do{
      //pauseState=digitalRead(pausePin);
     // check the state of the pausePin
     if(pauseState){
-      motorStop();
+      motorStop(motorPins);
       if(!printCheck){
         Serial.print("PAUSED");
         (lcd).home();
@@ -42,7 +83,7 @@ unsigned long pauseCheck(int pausePin, int unpausePin, LiquidCrystal lcd, int mo
         Serial.print("UNPAUSED");
         tempWrite(lcd, "UNPAUSED");
         printCheck = false;
-        runMotor(motor);
+        runForward(motorPins);
       }
     }
     else{

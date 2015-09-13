@@ -24,7 +24,7 @@
  * Return Value:
  */
  
-boolean runBuffer(int motor, unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd){
+boolean runBuffer(int motorPins[], unsigned long bufferTime, int stopPin, int pausePin, int unpausePin, boolean pauseState, LiquidCrystal lcd){
   // set the flowrate
   double flowRate = 1;
   // set up the LCD display based on runBuffer
@@ -43,16 +43,16 @@ boolean runBuffer(int motor, unsigned long bufferTime, int stopPin, int pausePin
   
   // while the interval is not over, run the motorPins
   while(millis() < duration){
-    runMotor(motor);
+    runForward(motorPins);
     // if stop is pressed at any time, return true
     if(digitalRead(stopPin)){
-      motorStop();
+      motorStop(motorPins);
       return true;
     }
     // record the amount of time remaining
     unsigned long timeDif = duration - millis();
     // reset the end time withthe remaining time to accomodate for pause duration
-    duration = timeDif + pauseCheck(pausePin, unpausePin, lcd, motor);
+    duration = timeDif + pauseCheck(pausePin, unpausePin, lcd, motorPins);
     
     // lcd prints volume
     unsigned long volume = (unsigned long)flowRate*(millis()%60000)/1000;  //need to revise length of volume digits once know more definite flowrate and final volumes***************************************
@@ -63,6 +63,6 @@ boolean runBuffer(int motor, unsigned long bufferTime, int stopPin, int pausePin
     countDown(lcd, duration - millis());
   }
   // stop the motorPins
-  motorStop();
+  motorStop(motorPins);
   return false;
 }

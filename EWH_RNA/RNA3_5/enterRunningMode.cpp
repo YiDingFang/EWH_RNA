@@ -27,9 +27,9 @@ void enterRunningMode()
   while(!digitalRead(stopPin)){
     while(digitalRead(startPin))
     {
-      runMotor(solutionPins[solutionIndex]);
+      runForward(solutionPins[solutionIndex]);
     }
-    motorStop();
+    motorStop(solutionPins[solutionIndex]);
   }
   mode = 1;
   tempWrite(lcd, "Priming completed");
