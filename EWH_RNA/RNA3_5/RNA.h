@@ -79,8 +79,8 @@ extern boolean sterilizationCheck;
 
 extern boolean printCheck;
 extern boolean normalCheck;
-extern int* solutionPins[3];
-extern String solutionNames[3];
+extern int* solutionPins[4];
+extern String solutionNames[4];
 extern int solutionIndex;
 
 

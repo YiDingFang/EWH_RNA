@@ -25,12 +25,13 @@
  */
 
 int stopPin=28;
-int startPin=26;
+//int startPin=26;
+int startPin=22;
 int pausePin=24;
-int unpausePin=22;
-int primePin = 30; //need to add this button in the circuit
+int unpausePin=24;
+int primePin = 30;
 
-int solenoidPins[]= {1, 2};
+int solenoidPins[]= {50, 51};
 int IRPins[] = {33, 32};
 int washPins[] = {43, 42};
 int elutionPins[] = {35, 34};
@@ -47,8 +48,8 @@ boolean sterilizationCheck=false;
 boolean printCheck = false;
 boolean normalCheck = false;
 
-int* solutionPins[3] = {IRPins, washPins, elutionPins};
-String solutionNames[3] = {"IR", "WASH", "ELUTION"};
+int* solutionPins[4] = {IRPins, washPins, elutionPins, solenoidPins};
+String solutionNames[4] = {"IR", "WASH", "ELUTION", "SOLENOID"};
 int solutionIndex = 0;
 
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);

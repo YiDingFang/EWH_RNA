@@ -26,7 +26,7 @@ void runPrimingMode()
 {
   boolean modeChanged=false;
   //Display UI
-  int n = 3; // number of indices
+  int n = 4; // number of indices
   writeLine(lcd,"Select Soln: ",1); 
   writeLine(lcd,"P/UP to change soln", 2);
   lcd.setCursor(13,1);
